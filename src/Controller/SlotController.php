@@ -35,11 +35,11 @@ class SlotController extends AbstractController
     {
         $user = $this->getUser();
         if (!$user) {
-            return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_light_login');
         }
 
         $slots = $em->getRepository(Slot::class)->findBy(['active' => true], ['startAt' => 'ASC']);
-        return $this->render('slot/index.html.twig', ['slots' => $slots, 'path' => 'slot_index']);
+        return $this->render('slot/index.html.twig', ['slots' => $slots, 'path' => 'slot_index', 'user' => $user]);
     }
 
     #[Route('/slots/{id}/reserve', name: 'slot_reserve')]
@@ -73,6 +73,6 @@ class SlotController extends AbstractController
             return $this->redirectToRoute('slot_index');
         }
 
-        return $this->render('slot/reserve.html.twig', ['slot' => $slot, 'form' => $form->createView(), 'path' => 'slot_reserve']);
+        return $this->render('slot/reserve.html.twig', ['slot' => $slot, 'form' => $form->createView(), 'path' => 'slot_reserve', 'user' => $user]);
     }
 }

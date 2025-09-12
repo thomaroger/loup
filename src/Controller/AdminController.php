@@ -22,14 +22,16 @@ class AdminController extends AbstractController
     #[Route('/admin/slots', name: 'admin_slots')]
     public function slots(EntityManagerInterface $em): Response
     {
+        $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $slots = $em->getRepository(Slot::class)->findBy([], ['startAt' => 'ASC']);
-        return $this->render('admin/slots.html.twig', ['slots' => $slots, 'path' => 'admin_slots']);
+        return $this->render('admin/slots.html.twig', ['slots' => $slots, 'path' => 'admin_slots', 'user' => $user]);
     }
 
     #[Route('/admin/slots/{id}/arbitre', name: 'admin_slot_arbitre')]
     public function arbitreSlot(Slot $slot, ReservationRepository $rr): Response
     {
+        $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $reservations = $rr->createQueryBuilder('r')
             ->andWhere('r.slot = :slot')
@@ -39,7 +41,7 @@ class AdminController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        return $this->render('admin/slot_arbitre.html.twig', ['slot' => $slot, 'reservations' => $reservations, 'path' => 'admin_slot_arbitre']);
+        return $this->render('admin/slot_arbitre.html.twig', ['slot' => $slot, 'reservations' => $reservations, 'path' => 'admin_slot_arbitre', 'user' => $user]);
     }
 
     #[Route('/admin/reservations/{id}/choose', name: 'admin_choose_reservation', methods:['POST'])]

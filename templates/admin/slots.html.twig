@@ -3,7 +3,7 @@
 {% block body %}
 <h1>Gestion des créneaux</h1>
 <table class="table">
-  <thead><tr><th>Label</th><th>Start</th><th>End</th><th>Réservations</th><th>Selectionné</th><th>Action</th></tr></thead>
+  <thead><tr><th>Label</th><th>Début</th><th>Fin</th><th>Réservations</th><th>Selectionné</th><th>Action</th></tr></thead>
   <tbody>
   {% for slot in slots %}
     <tr>
@@ -15,8 +15,6 @@
       <td>
         {% if slot.reservations|length > 1 %}
           <a class="btn btn-secondary btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Arbitrer</a>
-        {% else %}
-          <a class="btn btn-secondary btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Voir</a>
         {% endif %}
       </td>
     </tr>
