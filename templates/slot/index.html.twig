@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+{% block title %}Créneaux{% endblock %}
+{% block body %}
+<h1>Créneaux disponibles</h1>
+<div class="clearfix">&nbsp;</div>
+<form class="d-flex" role="search">
+<input class="form-control me-2" id="slot-filter" type="search" placeholder="Search" aria-label="Search"/>
+
+</form>
+<div class="clearfix">&nbsp;</div>
+
+<ul class="list-group" id="slots-list">
+	{% for slot in slots %}
+		<li class="list-group-item slots" id="slot-{{slot.id}}">
+			<div class="container text-center">
+				<div class="row">
+					<div class="col text-start task-name">
+            <i class="fa-solid fa-calendar-days"></i>
+						{{slot.label}} 
+            <br /> 
+            {{ slot.startAt|date('d/m/Y H:i') }}→ {{ slot.endAt|date('d/m/Y H:i') }}
+					</div>
+					<div class="col text-end">
+            <p>{{ slot.reservations|length }} réservation(s)</p>
+            <a class="btn btn-success" href="{{ path('slot_reserve', {id:slot.id}) }}">Réserver</a>
+					</div>
+				</div>
+			</div>
+		</li>
+	{% endfor %}
+</ul>
+{% endblock %}

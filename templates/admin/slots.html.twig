@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+{% block title %}Admin — Créneaux{% endblock %}
+{% block body %}
+<h1>Gestion des créneaux</h1>
+<table class="table">
+  <thead><tr><th>Label</th><th>Start</th><th>End</th><th>Réservations</th><th>Selectionné</th><th>Action</th></tr></thead>
+  <tbody>
+  {% for slot in slots %}
+    <tr>
+      <td>{{ slot.label }}</td>
+      <td>{{ slot.startAt|date('d/m/Y') }}</td>
+      <td>{{ slot.endAt|date('d/m/Y') }}</td>
+      <td>{{ slot.reservations|length }}</td>
+      <td>{{ slot.getSeletedReservation() }}</td>
+      <td>
+        {% if slot.reservations|length > 1 %}
+          <a class="btn btn-secondary btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Arbitrer</a>
+        {% else %}
+          <a class="btn btn-secondary btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Voir</a>
+        {% endif %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+<a class="btn btn-outline-primary" href="{{ path('admin_export') }}">Exporter CSV</a>
+{% endblock %}
