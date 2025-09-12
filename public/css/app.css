@@ -183,9 +183,11 @@ body {
 }
 
 
-.dark .footer a {
+.dark .footer a, .dark .form-signin a {
   color: white;
 }
+
+
 
 .dark .footer a:hover, .dark .footer a.active {
   background-color: #495057;
