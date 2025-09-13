@@ -21,7 +21,7 @@
       <td>{{ slot.getSelectedReservation() }}</td>
       <td>
         {% if slot.reservations|length > 1 %}
-          <a class="btn btn-secondary btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Arbitrer</a>
+          <a class="btn btn-danger btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Arbitrer</a>
         {% endif %}
       </td>
     </tr>
