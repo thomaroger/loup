@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
         $admin->setRoles(['ROLE_ADMIN']);
         $admin->setPassword($this->hasher->hashPassword($admin, '07041987'));
         $manager->persist($admin);
-
+/** 
         // Parent 1
         $p1 = new User();
         $p1->setEmail('parent1@example.com');
@@ -61,7 +61,7 @@ class AppFixtures extends Fixture
         $c2->setFirstName('Lina');
         $c2->setParent($p2);
         $manager->persist($c2); 
-
+*/
         // Slots
         $s = new Slot();
         $s->setLabel('Mercredi 17 septembre');
