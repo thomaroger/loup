@@ -20,48 +20,7 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-        // Admin
-        $admin = new User();
-        $admin->setEmail('laporte.aurelie91@gmail.com');
-        $admin->setName('Aurélie ROGER');
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->hasher->hashPassword($admin, '12121984'));
-        $manager->persist($admin);
-
-        $admin = new User();
-        $admin->setEmail('thomaroger@gmail.com');
-        $admin->setName('Thomas ROGER');
-        $admin->setRoles(['ROLE_ADMIN']);
-        $admin->setPassword($this->hasher->hashPassword($admin, '07041987'));
-        $manager->persist($admin);
-/** 
-        // Parent 1
-        $p1 = new User();
-        $p1->setEmail('parent1@example.com');
-        $p1->setName('Parent One');
-        $p1->setRoles(['ROLE_PARENT']);
-        $p1->setPassword($this->hasher->hashPassword($p1, 'parentpass'));
-        $manager->persist($p1);
-
-        // Children
-        $c1 = new Child();
-        $c1->setFirstName('Hugo');
-        $c1->setParent($p1);
-        $manager->persist($c1);
-
-        // Parent 2
-        $p2 = new User();
-        $p2->setEmail('parent2@example.com');
-        $p2->setName('Parent Two');
-        $p2->setRoles(['ROLE_PARENT']);
-        $p2->setPassword($this->hasher->hashPassword($p2, 'parentpass'));
-        $manager->persist($p2);
-
-        $c2 = new Child();
-        $c2->setFirstName('Lina');
-        $c2->setParent($p2);
-        $manager->persist($c2); 
-*/
+    
         // Slots
         $s = new Slot();
         $s->setLabel('Mercredi 17 septembre');
