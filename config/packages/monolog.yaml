@@ -1,31 +1,9 @@
 monolog:
     handlers:
-        # Handler par défaut en DEV et TEST
-        main:
-            type: stream
-            path: "%kernel.logs_dir%/%kernel.environment%.log"
+        filter_for_errors:
+            action_level: error
+            handler: error_log_handler
+
+        error_log_handler:
+            type: error_log
             level: info
-            channels: ["!event"]
-
-        console:
-            type: console
-            process_psr_3_messages: false
-            channels: ["!event", "!doctrine"]
-
-when@prod:
-    monolog:
-        handlers:
-            main:
-                action_level: info
-                handler: nested
-
-            nested:
-                type: stream
-                path: "%kernel.logs_dir%/prod.log"
-                level: info
-                max_files: 10
-
-            console:
-                type: console
-                process_psr_3_messages: false
-                channels: ["!event", "!doctrine"]
