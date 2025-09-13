@@ -115,7 +115,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reservations;
     }
 
-    public function getCountMercrediReservations(): int
+    public function getMercrediReservations(): Collection
     {
         $reservations = $this->getReservations()
             ->filter(function (Reservation $r) {
@@ -123,10 +123,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                     ->getType() === 'Mercredi';
             });
 
-        return $reservations->count();
+        return $reservations;
     }
 
-    public function getCountWeekendReservations(): int
+    public function getWeekendReservations(): Collection
     {
         $reservations = $this->getReservations()
             ->filter(function (Reservation $r) {
@@ -134,7 +134,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
                     ->getType() === 'Weekend';
             });
 
-        return $reservations->count();
+        return $reservations;
     }
 
     public function addReservation(\App\Entity\Reservation $r): self
