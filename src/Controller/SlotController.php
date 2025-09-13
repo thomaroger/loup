@@ -1,16 +1,19 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Controller;
 
+use App\Entity\Reservation;
+use App\Entity\Slot;
+use App\Form\ReservationType;
+use App\Repository\ReservationRepository;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use App\Entity\Slot;
-use App\Entity\Reservation;
-use App\Form\ReservationType;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Repository\ReservationRepository;
-use Symfony\Component\Form\FormFactoryInterface;
+use Symfony\Component\Routing\Annotation\Route;
 
 class SlotController extends AbstractController
 {
@@ -24,7 +27,7 @@ class SlotController extends AbstractController
     #[Route('/', name: 'app_index')]
     public function index(): Response
     {
-        if($this->getUser() && $this->getUser()->hasRole('ROLE_ADMIN')) {
+        if ($this->getUser() && $this->getUser()->hasRole('ROLE_ADMIN')) {
             return $this->redirectToRoute('admin_index');
         }
         return $this->redirectToRoute('slot_index');
@@ -34,22 +37,36 @@ class SlotController extends AbstractController
     public function slots(EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
-        if (!$user) {
+        if (! $user) {
             return $this->redirectToRoute('app_light_login');
         }
 
-        $slots = $em->getRepository(Slot::class)->findBy(['active' => true], ['startAt' => 'ASC']);
-        return $this->render('slot/index.html.twig', ['slots' => $slots, 'path' => 'slot_index', 'user' => $user]);
+        $slots = $em->getRepository(Slot::class)->findBy([
+            'active' => true,
+        ], [
+            'startAt' => 'ASC',
+        ]);
+        return $this->render('slot/index.html.twig', [
+            'slots' => $slots,
+            'path' => 'slot_index',
+            'user' => $user,
+        ]);
     }
 
     #[Route('/slots/{id}/reserve', name: 'slot_reserve')]
-    public function reserve(Slot $slot, Request $request, EntityManagerInterface $em, ReservationRepository $rr): Response
-    {
+    public function reserve(
+        Slot $slot,
+        Request $request,
+        EntityManagerInterface $em,
+        ReservationRepository $rr
+    ): Response {
         $user = $this->getUser();
-        if (!$user) { return $this->redirectToRoute('app_login'); }
+        if (! $user) {
+            return $this->redirectToRoute('app_login');
+        }
 
         if ($rr->countActiveByUser($user, $slot->getType()) >= 3) {
-            $this->addFlash('danger', 'Vous avez déjà 3 réservations sur un '.strtolower($slot->getType()));
+            $this->addFlash('danger', 'Vous avez déjà 3 réservations sur un ' . strtolower($slot->getType()));
             return $this->redirectToRoute('slot_index');
         }
 
@@ -59,7 +76,9 @@ class SlotController extends AbstractController
         }
 
         $reservation = new Reservation();
-        $form = $this->formFactory->create(ReservationType::class, $reservation, ['parent' => $user]);
+        $form = $this->formFactory->create(ReservationType::class, $reservation, [
+            'parent' => $user,
+        ]);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $others = $rr->countNonRejectedBySlot($slot);
@@ -73,6 +92,11 @@ class SlotController extends AbstractController
             return $this->redirectToRoute('slot_index');
         }
 
-        return $this->render('slot/reserve.html.twig', ['slot' => $slot, 'form' => $form->createView(), 'path' => 'slot_reserve', 'user' => $user]);
+        return $this->render('slot/reserve.html.twig', [
+            'slot' => $slot,
+            'form' => $form->createView(),
+            'path' => 'slot_reserve',
+            'user' => $user,
+        ]);
     }
 }

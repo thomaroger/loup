@@ -1,35 +1,35 @@
 {% extends 'base.login.html.twig' %}
 
 {% block body %}
-	<div class="form-signin w-100 m-auto text-center">
-		<a href="/" style="color:black;text-decoration:none">
-	
-		<img src="/img/loup.png" alt="Photo loup" class="child-photo" />
-    		&nbsp;
-			<p style="line-height:40px;">
-				<b>Loup</b>
-			</p>
-		</a>
-		{% if error %}
-			<div class="alert alert-danger" role="alert">
-				<div>Identifiants invalides</div>
-			</div>
-		{% endif %}
-		<form action="{{ path('app_light_login') }}" method="post">
+    <div class="form-signin w-100 m-auto text-center">
+        <a href="/" style="color:black;text-decoration:none">
+    
+        <img src="/img/loup.png" alt="Photo loup" class="child-photo" />
+            &nbsp;
+            <p style="line-height:40px;">
+                <b>Loup</b>
+            </p>
+        </a>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                <div>Identifiants invalides</div>
+            </div>
+        {% endif %}
+        <form action="{{ path('app_light_login') }}" method="post">
 
-			<div class="form-floating">
-				<input type="email" class="form-control" id="email" name="_username" value="" required>
-				<label for="email">Email</label>
-			</div>
-			<div class="clearfix">&nbsp;</div>
-			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
-			<button class="w-100 btn btn-lg btn-primary" type="submit">Connexion</button>
-			<div class="signup my-3 text-end  p-3 text-secondary-emphasis">
-			<p>
-				<a href="{{ path('app_parent_register') }}" class="text-secondary-emphasis">Vous n'avez pas de compte ?</a>
-			</p>
-			</div>
-		</form>
-	</div>
+            <div class="form-floating">
+                <input type="email" class="form-control" id="email" name="_username" value="" required>
+                <label for="email">Email</label>
+            </div>
+            <div class="clearfix">&nbsp;</div>
+            <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+            <button class="w-100 btn btn-lg btn-primary" type="submit">Connexion</button>
+            <div class="signup my-3 text-end  p-3 text-secondary-emphasis">
+            <p>
+                <a href="{{ path('app_parent_register') }}" class="text-secondary-emphasis">Vous n'avez pas de compte ?</a>
+            </p>
+            </div>
+        </form>
+    </div>
 
 {% endblock %}

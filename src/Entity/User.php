@@ -1,12 +1,14 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Symfony\Bridge\Doctrine\Validator\Constraints;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
@@ -32,31 +34,88 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: \App\Entity\Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->reservations = new ArrayCollection();
     }
 
-    public function getId(): ?int { return $this->id; }
-    public function getEmail(): ?string { return $this->email; }
-    public function setEmail(string $email): self { $this->email = $email; return $this; }
-    public function getName(): ?string { return $this->name; }
-    public function setName(?string $name): self { $this->name = $name; return $this; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    public function getUserIdentifier(): string { return (string) $this->email; }
-    public function getRoles(): array {
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): self
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): self
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getUserIdentifier(): string
+    {
+        return (string) $this->email;
+    }
+
+    public function getRoles(): array
+    {
         $roles = $this->roles;
-        if (!in_array('ROLE_PARENT', $roles, true)) $roles[] = 'ROLE_PARENT';
+        if (! in_array('ROLE_PARENT', $roles, true)) {
+            $roles[] = 'ROLE_PARENT';
+        }
         return array_unique($roles);
     }
 
-    public function hasRole(string $role): bool { return in_array($role, $this->roles, true); }
-    public function setRoles(array $roles): self { $this->roles = $roles; return $this; }
+    public function hasRole(string $role): bool
+    {
+        return in_array($role, $this->roles, true);
+    }
 
-    public function getPassword(): string { return (string) $this->password; }
-    public function setPassword(string $password): self { $this->password = $password; return $this; }
+    public function setRoles(array $roles): self
+    {
+        $this->roles = $roles;
+        return $this;
+    }
 
-    public function eraseCredentials(): void {}
+    public function getPassword(): string
+    {
+        return (string) $this->password;
+    }
 
-    public function getReservations(): Collection { return $this->reservations; }
-    public function addReservation(\App\Entity\Reservation $r): self { if (!$this->reservations->contains($r)) { $this->reservations[] = $r; $r->setUser($this); } return $this; }
+    public function setPassword(string $password): self
+    {
+        $this->password = $password;
+        return $this;
+    }
+
+    public function eraseCredentials(): void
+    {
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function addReservation(\App\Entity\Reservation $r): self
+    {
+        if (! $this->reservations->contains($r)) {
+            $this->reservations[] = $r;
+            $r->setUser($this);
+        } return $this;
+    }
 }

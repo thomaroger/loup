@@ -1,9 +1,12 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Repository;
 
 use App\Entity\Reservation;
-use App\Entity\User;
 use App\Entity\Slot;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 

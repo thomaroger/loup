@@ -10,23 +10,23 @@
 <div class="clearfix">&nbsp;</div>
 
 <ul class="list-group" id="slots-list">
-	{% for slot in slots %}
-		<li class="list-group-item slots" id="slot-{{slot.id}}">
-			<div class="container text-center">
-				<div class="row">
-					<div class="col text-start task-name">
+    {% for slot in slots %}
+        <li class="list-group-item slots" id="slot-{{slot.id}}">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col text-start task-name">
             <i class="fa-solid fa-calendar-days"></i>
-						{{slot.label}} 
+                        {{slot.label}} 
             <br /> 
             {{ slot.startAt|date('d/m/Y H:i') }}→ {{ slot.endAt|date('d/m/Y H:i') }}
-					</div>
-					<div class="col text-end">
+                    </div>
+                    <div class="col text-end">
             <p>{{ slot.reservations|length }} réservation(s)</p>
             <a class="btn btn-success" href="{{ path('slot_reserve', {id:slot.id}) }}">Réserver</a>
-					</div>
-				</div>
-			</div>
-		</li>
-	{% endfor %}
+                    </div>
+                </div>
+            </div>
+        </li>
+    {% endfor %}
 </ul>
 {% endblock %}

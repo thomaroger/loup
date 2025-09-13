@@ -1,43 +1,43 @@
 {% extends 'base.html.twig' %}
 {% block title %}Loup - Créneau - Réservation{% endblock %}
 {% block body %}
-	<div class="container py-5">
-		<div class="row justify-content-center">
-			<div class="col-md-8">
-				<div class="card shadow-sm">
-           			<div class="card-header text-white text-center">
-						<b class="mb-0">Réserver le Loup</b>
-					</div>
-					<div class="card-body">
-						{{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
-						<div class="mb-3">
-						Créneau :<br /> 
-							&nbsp;&nbsp;&nbsp;&nbsp;{{ slot.label }}<br/>
-							&nbsp;&nbsp;&nbsp;&nbsp;du
-						{{ slot.startAt|date('d/m/Y H:i') }}
-						au
-						{{ slot.endAt|date('d/m/Y H:i') }}
-						</div>
-						<div class="clearfix">&nbsp;</div>
-						<div class="mb-3">
-							{{ form_label(form.child, 'Choisissez votre enfant', {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.child, {'attr': {'class': 'form-select'}}) }}
-							{{ form_errors(form.child) }}
-						</div>
-						<div class="clearfix">&nbsp;</div>
-						<div class="mb-3">
-							{{ form_label(form.justification, 'Justification', {'label_attr': {'class': 'form-label'}}) }}
-							{{ form_widget(form.justification, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Anniversaire, ...'}}) }}
-							{{ form_errors(form.justification) }}
-						</div>
-						<div class="text-center">
-							<button type="submit" class="btn btn-primary btn-lg">Réserver</button>
-						</div>
-						{{ form_end(form) }}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-header text-white text-center">
+                        <b class="mb-0">Réserver le Loup</b>
+                    </div>
+                    <div class="card-body">
+                        {{ form_start(form, {'attr': {'class': 'needs-validation'}}) }}
+                        <div class="mb-3">
+                        Créneau :<br /> 
+                            &nbsp;&nbsp;&nbsp;&nbsp;{{ slot.label }}<br/>
+                            &nbsp;&nbsp;&nbsp;&nbsp;du
+                        {{ slot.startAt|date('d/m/Y H:i') }}
+                        au
+                        {{ slot.endAt|date('d/m/Y H:i') }}
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="mb-3">
+                            {{ form_label(form.child, 'Choisissez votre enfant', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.child, {'attr': {'class': 'form-select'}}) }}
+                            {{ form_errors(form.child) }}
+                        </div>
+                        <div class="clearfix">&nbsp;</div>
+                        <div class="mb-3">
+                            {{ form_label(form.justification, 'Justification', {'label_attr': {'class': 'form-label'}}) }}
+                            {{ form_widget(form.justification, {'attr': {'class': 'form-control', 'placeholder': 'Ex: Anniversaire, ...'}}) }}
+                            {{ form_errors(form.justification) }}
+                        </div>
+                        <div class="text-center">
+                            <button type="submit" class="btn btn-primary btn-lg">Réserver</button>
+                        </div>
+                        {{ form_end(form) }}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 

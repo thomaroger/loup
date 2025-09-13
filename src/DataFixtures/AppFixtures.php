@@ -1,10 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\DataFixtures;
 
-use App\Entity\User;
-use App\Entity\Child;
 use App\Entity\Slot;
-use App\Entity\Reservation;
 use DateTime;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
@@ -13,6 +13,7 @@ use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 class AppFixtures extends Fixture
 {
     private UserPasswordHasherInterface $hasher;
+
     public function __construct(UserPasswordHasherInterface $hasher)
     {
         $this->hasher = $hasher;
@@ -20,77 +21,76 @@ class AppFixtures extends Fixture
 
     public function load(ObjectManager $manager): void
     {
-    
+
         // Slots
         $s = new Slot();
         $s->setLabel('Mercredi 17 septembre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '16/09/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '18/09/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '16/09/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '18/09/2025 08:00'));
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 20 et 21 septembre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '19/09/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '22/09/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '19/09/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '22/09/2025 08:00'));
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Mercredi 24 septembre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '23/09/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '25/09/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '23/09/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '25/09/2025 08:00'));
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 27 et 28 septembre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '26/09/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '29/09/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '26/09/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '29/09/2025 08:00'));
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 1 octobre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '30/09/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '02/10/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '30/09/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '02/10/2025 08:00'));
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 4 et 5 octobre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '03/10/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '06/10/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '03/10/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '06/10/2025 08:00'));
         $s->setType('Weekend');
         $s->setActive(true);
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Mercredi 8 octobre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '07/10/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '09/10/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '07/10/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '09/10/2025 08:00'));
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 11 et 12 octobre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '10/10/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '13/10/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '10/10/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '13/10/2025 08:00'));
         $s->setType('Weekend');
         $s->setActive(true);
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Mercredi 15 octobre');
-        $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '14/10/2025 16:30'));
-        $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '16/10/2025 08:00'));
+        $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '14/10/2025 16:30'));
+        $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '16/10/2025 08:00'));
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
@@ -111,7 +111,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 12 novembre');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '10/11/2025 16:30'));
@@ -128,7 +127,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 19 novembre');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '18/11/2025 16:30'));
@@ -144,7 +142,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 26 novembre');
@@ -178,7 +175,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 10 décembre');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '9/12/2025 16:30'));
@@ -194,7 +190,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 17 décembre');
@@ -220,7 +215,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 14 janvier');
@@ -278,7 +272,6 @@ class AppFixtures extends Fixture
         $s->setType('Mercredi');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 25 fevrier');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '24/02/2026 16:30'));
@@ -294,7 +287,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 4 mars');
@@ -328,7 +320,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 18 mars');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '17/03/2026 16:30'));
@@ -344,7 +335,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 25 mars');
@@ -362,7 +352,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 1 avril');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '31/03/2026 16:30'));
@@ -370,7 +359,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Mercredi');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 22 avril');
@@ -428,7 +416,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 20 mai');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '19/05/2026 16:30'));
@@ -444,7 +431,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 27 mai');
@@ -494,7 +480,6 @@ class AppFixtures extends Fixture
         $s->setType('Weekend');
         $manager->persist($s);
 
-
         $s = new Slot();
         $s->setLabel('Mercredi 17 juin');
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '16/06/2026 16:30'));
@@ -510,7 +495,6 @@ class AppFixtures extends Fixture
         $s->setActive(true);
         $s->setType('Weekend');
         $manager->persist($s);
-
 
         $s = new Slot();
         $s->setLabel('Mercredi 24 juin');

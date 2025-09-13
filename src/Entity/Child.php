@@ -1,8 +1,10 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints;
 
 #[ORM\Entity]
 class Child
@@ -19,9 +21,30 @@ class Child
     #[ORM\ManyToOne(targetEntity: User::class)]
     private ?User $parent = null;
 
-    public function getId(): ?int { return $this->id; }
-    public function getFirstName(): ?string { return $this->firstName; }
-    public function setFirstName(string $n): self { $this->firstName = $n; return $this; }
-    public function getParent(): ?User { return $this->parent; }
-    public function setParent(?User $p): self { $this->parent = $p; return $this; }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getFirstName(): ?string
+    {
+        return $this->firstName;
+    }
+
+    public function setFirstName(string $n): self
+    {
+        $this->firstName = $n;
+        return $this;
+    }
+
+    public function getParent(): ?User
+    {
+        return $this->parent;
+    }
+
+    public function setParent(?User $p): self
+    {
+        $this->parent = $p;
+        return $this;
+    }
 }

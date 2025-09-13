@@ -1,18 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
-use Doctrine\ORM\EntityManagerInterface;
-use App\Entity\Slot;
 use App\Entity\Reservation;
+use App\Entity\Slot;
 use App\Repository\ReservationRepository;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
+use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
-
     #[Route('/admin', name: 'admin_index')]
     public function index(): Response
     {
@@ -24,8 +26,14 @@ class AdminController extends AbstractController
     {
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $slots = $em->getRepository(Slot::class)->findBy([], ['startAt' => 'ASC']);
-        return $this->render('admin/slots.html.twig', ['slots' => $slots, 'path' => 'admin_slots', 'user' => $user]);
+        $slots = $em->getRepository(Slot::class)->findBy([], [
+            'startAt' => 'ASC',
+        ]);
+        return $this->render('admin/slots.html.twig', [
+            'slots' => $slots,
+            'path' => 'admin_slots',
+            'user' => $user,
+        ]);
     }
 
     #[Route('/admin/slots/{id}/arbitre', name: 'admin_slot_arbitre')]
@@ -36,28 +44,39 @@ class AdminController extends AbstractController
         $reservations = $rr->createQueryBuilder('r')
             ->andWhere('r.slot = :slot')
             ->setParameter('slot', $slot)
-            ->leftJoin('r.user','u')
+            ->leftJoin('r.user', 'u')
             ->addSelect('u')
             ->getQuery()
             ->getResult();
 
-        return $this->render('admin/slot_arbitre.html.twig', ['slot' => $slot, 'reservations' => $reservations, 'path' => 'admin_slot_arbitre', 'user' => $user]);
+        return $this->render('admin/slot_arbitre.html.twig', [
+            'slot' => $slot,
+            'reservations' => $reservations,
+            'path' => 'admin_slot_arbitre',
+            'user' => $user,
+        ]);
     }
 
-    #[Route('/admin/reservations/{id}/choose', name: 'admin_choose_reservation', methods:['POST'])]
-    public function chooseReservation(Reservation $reservation, EntityManagerInterface $em, ReservationRepository $rr): Response
-    {
+    #[Route('/admin/reservations/{id}/choose', name: 'admin_choose_reservation', methods: ['POST'])]
+    public function chooseReservation(
+        Reservation $reservation,
+        EntityManagerInterface $em,
+        ReservationRepository $rr
+    ): Response {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
         $slot = $reservation->getSlot();
 
-        $em->getConnection()->beginTransaction();
+        $em->getConnection()
+            ->beginTransaction();
         try {
             $rr->rejectAllForSlot($slot);
             $reservation->setStatus('SELECTIONNE');
             $em->flush();
-            $em->getConnection()->commit();
+            $em->getConnection()
+                ->commit();
         } catch (\Exception $e) {
-            $em->getConnection()->rollBack();
+            $em->getConnection()
+                ->rollBack();
             throw $e;
         }
 
@@ -72,15 +91,21 @@ class AdminController extends AbstractController
 
         $rows = $rr->findAllWithSlotAndUser();
 
-        $response = new StreamedResponse(function() use ($rows) {
+        $response = new StreamedResponse(function () use ($rows) {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['Slot','Start','End','Parent','Child','Justification','Status']);
+            fputcsv($handle, ['Slot', 'Start', 'End', 'Parent', 'Child', 'Justification', 'Status']);
             foreach ($rows as $r) {
                 fputcsv($handle, [
-                    $r->getSlot()->getLabel(),
-                    $r->getSlot()->getStartAt()->format('Y-m-d H:i'),
-                    $r->getSlot()->getEndAt()->format('Y-m-d H:i'),
-                    $r->getUser()->getEmail(),
+                    $r->getSlot()
+                        ->getLabel(),
+                    $r->getSlot()
+                        ->getStartAt()
+                        ->format('Y-m-d H:i'),
+                    $r->getSlot()
+                        ->getEndAt()
+                        ->format('Y-m-d H:i'),
+                    $r->getUser()
+                        ->getEmail(),
                     $r->getChild()?->getFirstName(),
                     $r->getJustification(),
                     $r->getStatus(),
@@ -89,8 +114,8 @@ class AdminController extends AbstractController
             fclose($handle);
         });
 
-        $response->headers->set('Content-Type','text/csv');
-        $response->headers->set('Content-Disposition','attachment; filename="reservations.csv"');
+        $response->headers->set('Content-Type', 'text/csv');
+        $response->headers->set('Content-Disposition', 'attachment; filename="reservations.csv"');
 
         return $response;
     }

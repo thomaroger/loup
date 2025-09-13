@@ -1,13 +1,20 @@
 <?php
+
+declare(strict_types=1);
+
 namespace App\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity]
 class Slot
 {
+    public const TYPE_MERCREDI = 'mercredi';
+
+    public const TYPE_WEEKEND = 'weekend';
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
@@ -31,39 +38,90 @@ class Slot
     #[ORM\Column(length: 20)]
     private ?string $type = null;
 
-    public const TYPE_MERCREDI = 'mercredi';
-    public const TYPE_WEEKEND = 'weekend';
+    public function __construct()
+    {
+        $this->reservations = new ArrayCollection();
+    }
 
-    public function __construct() { $this->reservations = new ArrayCollection(); }
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
 
-    public function getId(): ?int { return $this->id; }
-    public function getLabel(): ?string { return $this->label; }
-    public function setLabel(string $l): self { $this->label = $l; return $this; }
-    public function getStartAt(): ?\DateTimeInterface { return $this->startAt; }
-    public function setStartAt(\DateTimeInterface $d): self { $this->startAt = $d; return $this; }
-    public function getEndAt(): ?\DateTimeInterface { return $this->endAt; }
-    public function setEndAt(\DateTimeInterface $d): self { $this->endAt = $d; return $this; }
-    public function isActive(): bool { return $this->active; }
-    public function setActive(bool $b): self { $this->active = $b; return $this; }
-    public function getReservations(): Collection { return $this->reservations; }
-    public function getSeletedReservation(): string {
+    public function getLabel(): ?string
+    {
+        return $this->label;
+    }
+
+    public function setLabel(string $l): self
+    {
+        $this->label = $l;
+        return $this;
+    }
+
+    public function getStartAt(): ?\DateTimeInterface
+    {
+        return $this->startAt;
+    }
+
+    public function setStartAt(\DateTimeInterface $d): self
+    {
+        $this->startAt = $d;
+        return $this;
+    }
+
+    public function getEndAt(): ?\DateTimeInterface
+    {
+        return $this->endAt;
+    }
+
+    public function setEndAt(\DateTimeInterface $d): self
+    {
+        $this->endAt = $d;
+        return $this;
+    }
+
+    public function isActive(): bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $b): self
+    {
+        $this->active = $b;
+        return $this;
+    }
+
+    public function getReservations(): Collection
+    {
+        return $this->reservations;
+    }
+
+    public function getSeletedReservation(): string
+    {
         if ($this->getReservations()->count() === 1) {
-            return $this->getReservations()->first()->getUser()->getName();
+            return $this->getReservations()
+                ->first()
+                ->getUser()
+                ->getName();
         }
-        $reservations =  $this->getReservations()->filter(function(Reservation $r) {
-            return $r->getStatus() === 'SELECTIONNE';
-        });
+        $reservations = $this->getReservations()
+            ->filter(function (Reservation $r) {
+                return $r->getStatus() === 'SELECTIONNE';
+            });
         if (empty($reservations) || $reservations->count() === 0) {
             return '';
         }
-        return $reservations->first()->getUser()->getName();
-     }
+        return $reservations->first()
+            ->getUser()
+            ->getName();
+    }
 
     public static function getTypes(): array
     {
         return [
             'Mercredi' => self::TYPE_MERCREDI,
-            'Weekend'  => self::TYPE_WEEKEND,
+            'Weekend' => self::TYPE_WEEKEND,
         ];
     }
 
