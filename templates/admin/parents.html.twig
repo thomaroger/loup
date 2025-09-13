@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des parents
+{% endblock %}
+
+{% block body %}
+	<div class="container mt-4">
+		<h1 class="mb-4">Liste des parents et leurs enfants</h1>
+
+		<table class="table table-bordered table-striped">
+			<thead class="table-dark">
+				<tr>
+					<th>Nom du parent</th>
+					<th>Email</th>
+					<th>Enfants associés</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for parent in parents %}
+					<tr>
+						<td>{{ parent.name }}</td>
+						<td>{{ parent.email }}</td>
+						<td>
+							{% if parent.children is not empty %}
+									{% for child in parent.children %}
+										{{ child.firstname }}
+									{% endfor %}
+							{% else %}
+								<em>Aucun enfant</em>
+							{% endif %}
+						</td>
+					</tr>
+				{% else %}
+					<tr>
+						<td colspan="3" class="text-center">Aucun parent trouvé</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+{% endblock %}
+
