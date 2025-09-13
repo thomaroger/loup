@@ -7,8 +7,7 @@ namespace App\Controller;
 use App\Entity\Reservation;
 use App\Entity\Slot;
 use App\Form\ReservationType;
-use App\Repository\ReservationRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\SlotService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -17,11 +16,10 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class SlotController extends AbstractController
 {
-    private FormFactoryInterface $formFactory;
-
-    public function __construct(FormFactoryInterface $formFactory)
-    {
-        $this->formFactory = $formFactory;
+    public function __construct(
+        private FormFactoryInterface $formFactory,
+        private SlotService $slotService
+    ) {
     }
 
     #[Route('/', name: 'app_index')]
@@ -34,18 +32,16 @@ class SlotController extends AbstractController
     }
 
     #[Route('/slots', name: 'slot_index')]
-    public function slots(EntityManagerInterface $em): Response
+    public function slots(): Response
     {
         $user = $this->getUser();
         if (! $user) {
             return $this->redirectToRoute('app_light_login');
         }
 
-        $slots = $em->getRepository(Slot::class)->findBy([
-            'active' => true,
-        ], [
-            'startAt' => 'ASC',
-        ]);
+        // Utilisation du service optimisé pour éviter les requêtes N+1
+        $slots = $this->slotService->getActiveSlotsWithReservations();
+
         return $this->render('slot/index.html.twig', [
             'slots' => $slots,
             'path' => 'slot_index',
@@ -54,24 +50,19 @@ class SlotController extends AbstractController
     }
 
     #[Route('/slots/{id}/reserve', name: 'slot_reserve')]
-    public function reserve(
-        Slot $slot,
-        Request $request,
-        EntityManagerInterface $em,
-        ReservationRepository $rr
-    ): Response {
+    public function reserve(Slot $slot, Request $request): Response
+    {
         $user = $this->getUser();
         if (! $user) {
             return $this->redirectToRoute('app_login');
         }
 
-        if ($rr->countActiveByUser($user, $slot->getType()) >= 3) {
-            $this->addFlash('danger', 'Vous avez déjà 3 réservations sur un ' . strtolower($slot->getType()));
-            return $this->redirectToRoute('slot_index');
-        }
-
-        if ($rr->existsForUserAndSlot($user, $slot)) {
-            $this->addFlash('danger', 'Vous avez déjà réservé ce créneau : ' . $slot->getLabel());
+        // Vérification centralisée des règles métier
+        $errors = $this->slotService->canUserReserveSlot($user, $slot);
+        if (! empty($errors)) {
+            foreach ($errors as $error) {
+                $this->addFlash('danger', $error);
+            }
             return $this->redirectToRoute('slot_index');
         }
 
@@ -80,16 +71,17 @@ class SlotController extends AbstractController
             'parent' => $user,
         ]);
         $form->handleRequest($request);
-        if ($form->isSubmitted() && $form->isValid()) {
-            $others = $rr->countNonRejectedBySlot($slot);
-            $reservation->setStatus($others > 0 ? 'NON SELECTIONNE' : 'SELECTIONNE');
-            $reservation->setSlot($slot);
-            $reservation->setUser($user);
-            $em->persist($reservation);
-            $em->flush();
 
-            $this->addFlash('success', 'Réservation enregistrée : ' . $slot->getLabel());
-            return $this->redirectToRoute('slot_index');
+        if ($form->isSubmitted() && $form->isValid()) {
+            try {
+                // Utilisation du service pour créer la réservation avec gestion des transactions
+                $this->slotService->createReservation($user, $slot, $reservation);
+
+                $this->addFlash('success', 'Réservation enregistrée : ' . $slot->getLabel());
+                return $this->redirectToRoute('slot_index');
+            } catch (\Exception $e) {
+                $this->addFlash('danger', 'Une erreur est survenue lors de la réservation. Veuillez réessayer.');
+            }
         }
 
         return $this->render('slot/reserve.html.twig', [

@@ -10,6 +10,7 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\Length;
 
 class ReservationType extends AbstractType
 {
@@ -31,6 +32,17 @@ class ReservationType extends AbstractType
             ])
             ->add('justification', TextareaType::class, [
                 'required' => false,
+                'attr' => [
+                    'placeholder' => 'Ex: Anniversaire, sortie familiale...',
+                    'maxlength' => 500,
+                    'rows' => 3,
+                ],
+                'constraints' => [
+                    new Length([
+                        'max' => 500,
+                        'maxMessage' => 'La justification ne peut pas dépasser {{ limit }} caractères',
+                    ]),
+                ],
             ]);
     }
 

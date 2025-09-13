@@ -6,8 +6,8 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Entity\Slot;
-use App\Repository\ReservationRepository;
-use Doctrine\ORM\EntityManagerInterface;
+use App\Service\ReservationService;
+use App\Service\SlotService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\StreamedResponse;
@@ -15,6 +15,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class AdminController extends AbstractController
 {
+    public function __construct(
+        private SlotService $slotService,
+        private ReservationService $reservationService
+    ) {
+    }
+
     #[Route('/admin', name: 'admin_index')]
     public function index(): Response
     {
@@ -22,13 +28,14 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/slots', name: 'admin_slots')]
-    public function slots(EntityManagerInterface $em): Response
+    public function slots(): Response
     {
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $slots = $em->getRepository(Slot::class)->findBy([], [
-            'startAt' => 'ASC',
-        ]);
+
+        // Utilisation du service optimisé
+        $slots = $this->slotService->getActiveSlotsWithReservations();
+
         return $this->render('admin/slots.html.twig', [
             'slots' => $slots,
             'path' => 'admin_slots',
@@ -37,17 +44,13 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/slots/{id}/arbitre', name: 'admin_slot_arbitre')]
-    public function arbitreSlot(Slot $slot, ReservationRepository $rr): Response
+    public function arbitreSlot(Slot $slot): Response
     {
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $reservations = $rr->createQueryBuilder('r')
-            ->andWhere('r.slot = :slot')
-            ->setParameter('slot', $slot)
-            ->leftJoin('r.user', 'u')
-            ->addSelect('u')
-            ->getQuery()
-            ->getResult();
+
+        // Utilisation du service optimisé
+        $reservations = $this->reservationService->getReservationsForSlot($slot);
 
         return $this->render('admin/slot_arbitre.html.twig', [
             'slot' => $slot,
@@ -58,59 +61,35 @@ class AdminController extends AbstractController
     }
 
     #[Route('/admin/reservations/{id}/choose', name: 'admin_choose_reservation', methods: ['POST'])]
-    public function chooseReservation(
-        Reservation $reservation,
-        EntityManagerInterface $em,
-        ReservationRepository $rr
-    ): Response {
+    public function chooseReservation(Reservation $reservation): Response
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
-        $slot = $reservation->getSlot();
 
-        $em->getConnection()
-            ->beginTransaction();
         try {
-            $rr->rejectAllForSlot($slot);
-            $reservation->setStatus('SELECTIONNE');
-            $em->flush();
-            $em->getConnection()
-                ->commit();
+            // Utilisation du service pour l'arbitrage avec gestion des transactions
+            $this->reservationService->chooseReservation($reservation);
+
+            $this->addFlash('success', 'Arbitrage fait pour le créneau : ' . $reservation->getSlot()->getLabel());
         } catch (\Exception $e) {
-            $em->getConnection()
-                ->rollBack();
-            throw $e;
+            $this->addFlash('danger', 'Une erreur est survenue lors de l\'arbitrage. Veuillez réessayer.');
         }
 
-        $this->addFlash('success', 'Arbitrage fait pour le créneau : ' . $slot->getLabel());
         return $this->redirectToRoute('admin_slots');
     }
 
     #[Route('/admin/export', name: 'admin_export')]
-    public function export(ReservationRepository $rr): Response
+    public function export(): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $rows = $rr->findAllWithSlotAndUser();
-
-        $response = new StreamedResponse(function () use ($rows) {
+        $response = new StreamedResponse(function () {
             $handle = fopen('php://output', 'w');
-            fputcsv($handle, ['Slot', 'Start', 'End', 'Parent', 'Child', 'Justification', 'Status']);
-            foreach ($rows as $r) {
-                fputcsv($handle, [
-                    $r->getSlot()
-                        ->getLabel(),
-                    $r->getSlot()
-                        ->getStartAt()
-                        ->format('Y-m-d H:i'),
-                    $r->getSlot()
-                        ->getEndAt()
-                        ->format('Y-m-d H:i'),
-                    $r->getUser()
-                        ->getEmail(),
-                    $r->getChild()?->getFirstName(),
-                    $r->getJustification(),
-                    $r->getStatus(),
-                ]);
+
+            // Utilisation du service optimisé pour l'export
+            foreach ($this->reservationService->exportReservationsToCsv() as $row) {
+                fputcsv($handle, $row);
             }
+
             fclose($handle);
         });
 

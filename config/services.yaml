@@ -1,9 +1,11 @@
-# This file is the entry point to configure your own services.
-# Files in the packages/ subdirectory configure your dependencies.
-
-# Put parameters here that don't need to change on each machine where the app is deployed
-# https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
-parameters:
+# This file is the entry point to configure your own services and load the default configuration.
+# If you want to remove a service, deprecate it, or change its class, you can apply the changes here.
+#
+# If you are *not* using the default services.yaml file in your package, you *must* pass an
+# empty array to the $services->import() method call, otherwise the default
+# configuration will be loaded.
+#
+# This file is imported only when needed, see https://symfony.com/doc/current/configuration.html#importing-the-routing-configuration
 
 services:
     # default configuration for services in *this* file
@@ -15,6 +17,31 @@ services:
     # this creates a service per class whose id is the fully-qualified class name
     App\:
         resource: '../src/'
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'
+            - '../src/Kernel.php'
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
+
+    # Configuration des services personnalisés
+    App\Service\SlotService:
+        arguments:
+            $logger: '@logger'
+
+    App\Service\ReservationService:
+        arguments:
+            $logger: '@logger'
+
+    App\Service\CacheService:
+        arguments:
+            $cache: '@cache.app'
+
+    App\Service\SecurityService:
+        arguments:
+            $logger: '@logger'
+
+    App\Service\NotificationService:
+        arguments:
+            $logger: '@logger'

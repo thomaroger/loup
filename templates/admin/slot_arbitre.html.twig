@@ -5,7 +5,11 @@
 <h1>Créneau — {{ slot.label }} - Arbitrage</h1>
 <ul class="list-group">
   {% for r in reservations %}
-    <li class="list-group-item d-flex justify-content-between align-items-center">
+    {% set color = 'danger' %}
+    {% if r.status == 'SELECTIONNE' %}
+      {% set color = 'success' %}
+    {% endif %}
+  <li class="list-group-item d-flex justify-content-between align-items-center list-group-item-{{color}}">
       <div>
         <strong>{{ r.user.email }}</strong> — {{ r.child.firstName }} — {{ r.justification }} — <em>{{ r.status }}</em>
       </div>
