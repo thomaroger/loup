@@ -6,7 +6,14 @@
   <thead><tr><th>Label</th><th>Début</th><th>Fin</th><th>Réservations</th><th>Selectionné</th><th>Action</th></tr></thead>
   <tbody>
   {% for slot in slots %}
-    <tr>
+    {% set color = "" %}
+    {% if slot.reservations|length > 1 %}
+      {% set color = "warning" %}
+    {% endif %}
+    {% if slot.reservations|length == 1 %}
+      {% set color = "success" %}
+    {% endif %}
+    <tr class="table-{{color}}">
       <td>{{ slot.label }}</td>
       <td>{{ slot.startAt|date('d/m/Y') }}</td>
       <td>{{ slot.endAt|date('d/m/Y') }}</td>
