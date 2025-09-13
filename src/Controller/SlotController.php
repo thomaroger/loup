@@ -48,8 +48,8 @@ class SlotController extends AbstractController
         $user = $this->getUser();
         if (!$user) { return $this->redirectToRoute('app_login'); }
 
-        if ($rr->countActiveByUser($user) >= 3) {
-            $this->addFlash('danger', 'Vous avez déjà 3 réservations.');
+        if ($rr->countActiveByUser($user, $slot->getType()) >= 3) {
+            $this->addFlash('danger', 'Vous avez déjà 3 réservations sur un '.strtolower($slot->getType()));
             return $this->redirectToRoute('slot_index');
         }
 

@@ -43,6 +43,12 @@ class AppFixtures extends Fixture
         $p1->setPassword($this->hasher->hashPassword($p1, 'parentpass'));
         $manager->persist($p1);
 
+        // Children
+        $c1 = new Child();
+        $c1->setFirstName('Hugo');
+        $c1->setParent($p1);
+        $manager->persist($c1);
+
         // Parent 2
         $p2 = new User();
         $p2->setEmail('parent2@example.com');
@@ -51,16 +57,10 @@ class AppFixtures extends Fixture
         $p2->setPassword($this->hasher->hashPassword($p2, 'parentpass'));
         $manager->persist($p2);
 
-        // Children
-        $c1 = new Child();
-        $c1->setFirstName('Hugo');
-        $c1->setParent($p1);
-        $manager->persist($c1);
-
         $c2 = new Child();
         $c2->setFirstName('Lina');
         $c2->setParent($p2);
-        $manager->persist($c2);
+        $manager->persist($c2); 
 
         // Slots
         $s = new Slot();
@@ -68,6 +68,7 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '16/09/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '18/09/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -75,6 +76,7 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '19/09/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '22/09/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -82,6 +84,7 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '23/09/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '25/09/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -89,6 +92,7 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '26/09/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '29/09/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -97,12 +101,14 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '30/09/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '02/10/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 4 et 5 octobre');
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '03/10/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '06/10/2025 08:00'));
+        $s->setType('Weekend');
         $s->setActive(true);
         $manager->persist($s);
 
@@ -111,12 +117,14 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '07/10/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '09/10/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
         $s->setLabel('Weekend du 11 et 12 octobre');
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '10/10/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '13/10/2025 08:00'));
+        $s->setType('Weekend');
         $s->setActive(true);
         $manager->persist($s);
 
@@ -125,6 +133,7 @@ class AppFixtures extends Fixture
         $s->setStartAt( DateTime::createFromFormat('d/m/Y H:i', '14/10/2025 16:30'));
         $s->setEndAt( DateTime::createFromFormat('d/m/Y H:i', '16/10/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -132,6 +141,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '04/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '06/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -139,6 +149,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '7/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '10/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -147,6 +158,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '10/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '13/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -154,6 +166,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '14/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '17/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -162,6 +175,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '18/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '20/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -169,6 +183,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '21/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '24/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -177,6 +192,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '25/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '27/11/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -184,6 +200,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '28/11/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '1/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -191,6 +208,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '2/12/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '4/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -198,6 +216,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '5/12/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '8/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -206,6 +225,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '9/12/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '11/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -213,6 +233,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '12/12/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '15/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -221,6 +242,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '16/12/2025 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '18/12/2025 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -228,6 +250,8 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '6/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '8/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -235,6 +259,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '09/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '12/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -243,6 +268,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '13/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '15/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -250,6 +276,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '16/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '19/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -257,6 +284,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '20/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '22/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -264,6 +292,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '23/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '26/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -271,6 +300,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '27/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '29/01/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -278,6 +308,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '30/01/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '02/02/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -285,6 +316,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '03/02/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '04/02/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
 
@@ -293,6 +325,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '24/02/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '26/02/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -300,6 +333,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '27/02/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '02/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -308,6 +342,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '03/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '05/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -315,6 +350,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '06/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '09/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -322,6 +358,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '10/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '12/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -329,6 +366,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '13/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '16/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -337,6 +375,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '17/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '19/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -344,6 +383,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '20/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '23/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -352,6 +392,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '17/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '19/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -359,6 +400,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '27/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '30/03/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -367,6 +409,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '31/03/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '02/04/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
 
@@ -375,6 +418,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '21/04/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '23/04/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -382,6 +426,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '24/04/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '27/04/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -389,6 +434,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '28/04/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '30/04/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -396,6 +442,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '30/04/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '04/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -403,6 +450,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '05/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '07/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -410,6 +458,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '07/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '11/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -417,6 +466,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '12/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '18/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -425,6 +475,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '19/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '21/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -432,6 +483,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '22/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '26/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -440,6 +492,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '26/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '28/05/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -447,6 +500,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '29/05/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '01/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -454,6 +508,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '02/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '04/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -461,6 +516,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '05/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '08/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -468,6 +524,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '09/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '11/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -475,6 +532,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '12/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '15/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -483,6 +541,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '16/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '18/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -490,6 +549,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '19/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '22/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
 
@@ -498,6 +558,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '23/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '25/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $s = new Slot();
@@ -505,6 +566,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '26/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '29/06/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Weekend');
         $manager->persist($s);
 
         $s = new Slot();
@@ -512,6 +574,7 @@ class AppFixtures extends Fixture
         $s->setStartAt(DateTime::createFromFormat('d/m/Y H:i', '30/06/2026 16:30'));
         $s->setEndAt(DateTime::createFromFormat('d/m/Y H:i', '02/07/2026 08:00'));
         $s->setActive(true);
+        $s->setType('Mercredi');
         $manager->persist($s);
 
         $manager->flush();

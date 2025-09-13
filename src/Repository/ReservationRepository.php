@@ -14,14 +14,17 @@ class ReservationRepository extends ServiceEntityRepository
         parent::__construct($registry, Reservation::class);
     }
 
-    public function countActiveByUser(User $user): int
+    public function countActiveByUser(User $user, string $type): int
     {
         return (int) $this->createQueryBuilder('r')
             ->select('COUNT(r.id)')
+            ->join('r.slot', 's')
             ->where('r.user = :user')
             ->andWhere('r.status IN (:states)')
+            ->andWhere('s.type = :type')
             ->setParameter('user', $user)
             ->setParameter('states', ['SELECTIONNE', 'NON SELECTIONNE'])
+            ->setParameter('type', $type)
             ->getQuery()
             ->getSingleScalarResult();
     }

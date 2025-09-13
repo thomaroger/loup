@@ -28,6 +28,12 @@ class Slot
     #[ORM\OneToMany(mappedBy: 'slot', targetEntity: \App\Entity\Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
 
+    #[ORM\Column(length: 20)]
+    private ?string $type = null;
+
+    public const TYPE_MERCREDI = 'mercredi';
+    public const TYPE_WEEKEND = 'weekend';
+
     public function __construct() { $this->reservations = new ArrayCollection(); }
 
     public function getId(): ?int { return $this->id; }
@@ -52,4 +58,24 @@ class Slot
         }
         return $reservations->first()->getUser()->getName();
      }
+
+    public static function getTypes(): array
+    {
+        return [
+            'Mercredi' => self::TYPE_MERCREDI,
+            'Weekend'  => self::TYPE_WEEKEND,
+        ];
+    }
+
+    public function getType(): ?string
+    {
+        return $this->type;
+    }
+
+    public function setType(string $type): self
+    {
+        $this->type = $type;
+
+        return $this;
+    }
 }
