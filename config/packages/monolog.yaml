@@ -18,11 +18,11 @@ when@prod:
             main:
                 action_level: info
                 handler: nested
-                
+
             nested:
                 type: stream
                 path: "%kernel.logs_dir%/prod.log"
-                level: debug
+                level: info
 
             console:
                 type: console
