@@ -63,7 +63,7 @@
 </a>
 {% if user.hasRole('ROLE_ADMIN') %}
 <a href="{{ path('admin_parents') }}" class="{% if path == 'admin_parents' %}active{% endif %}">
-	<i class="fa-solid fa-users"></i><br/>Parents
+    <i class="fa-solid fa-users"></i><br/>Parents
 </a>
 {% endif %}
 <a href="{{ path('app_logout') }}">
