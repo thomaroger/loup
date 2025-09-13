@@ -23,7 +23,7 @@ class ParentRegisterType extends AbstractType
             ->add('email', EmailType::class, [
                 'label' => 'Email du parent',
                 'attr' => [
-                    'placeholder' => 'exemple@email.com',
+                    'placeholder' => 'ex : exemple@email.com',
                     'maxlength' => 180,
                 ],
                 'constraints' => [
@@ -42,7 +42,7 @@ class ParentRegisterType extends AbstractType
             ->add('name', TextType::class, [
                 'label' => 'Prénom et nom du parent',
                 'attr' => [
-                    'placeholder' => 'Jean Dupont',
+                    'placeholder' => 'ex : Aurelie ROGER',
                     'maxlength' => 100,
                 ],
                 'constraints' => [
@@ -65,7 +65,7 @@ class ParentRegisterType extends AbstractType
                 'mapped' => false,
                 'label' => "Prénom de l'enfant",
                 'attr' => [
-                    'placeholder' => 'Marie',
+                    'placeholder' => 'ex : Loup',
                     'maxlength' => 100,
                 ],
                 'constraints' => [
