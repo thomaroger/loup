@@ -24,6 +24,11 @@
 			<div class="clearfix">&nbsp;</div>
 			<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 			<button class="w-100 btn btn-lg btn-primary" type="submit">Connexion</button>
+			<div class="signup my-3 text-end  p-3 text-secondary-emphasis">
+			<p>
+				<a href="{{ path('app_parent_register') }}" class="text-secondary-emphasis">Vous n'avez pas de compte ?</a>
+			</p>
+			</div>
 		</form>
 	</div>
 

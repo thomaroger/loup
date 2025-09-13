@@ -2,6 +2,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints;
 
 #[ORM\Entity]
 class Child
@@ -11,7 +12,8 @@ class Child
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 100)]
+    #[ORM\Column(type: 'string', length: 100, unique: true)]
+    #[UniqueEntity(fields: ['firstName'], message: 'Cet enfant est déjà inscrit.')]
     private ?string $firstName = null;
 
     #[ORM\ManyToOne(targetEntity: User::class)]
