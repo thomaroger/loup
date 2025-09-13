@@ -15,13 +15,10 @@ monolog:
 when@prod:
     monolog:
         handlers:
-            # En PROD, on remplace main par un "fingers_crossed"
             main:
-                type: fingers_crossed
-                action_level: error
+                action_level: info
                 handler: nested
-                excluded_http_codes: [404, 405] # on ignore les erreurs 404/405 dans les logs
-
+                
             nested:
                 type: stream
                 path: "%kernel.logs_dir%/prod.log"
