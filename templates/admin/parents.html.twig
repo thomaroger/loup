@@ -17,43 +17,29 @@
             </thead>
             <tbody>
                 {% for parent in parents %}
-                    {% set color = "danger" %}
-                    {% if parent.getCountSelectedReservationsByType == 1 %}
-                        {% set color = "warning" %}
-                    {% endif %}
-                    {% if parent.getCountSelectedReservationsByType == 2 %}
-                        {% set color = "success" %}
-                    {% endif %}
-                    <tr class="table-{{color}}">
-                        <td>{{ parent.name }}</td>
-                        <td>
-                            {% if parent.children is not empty %}
-                                    {% for child in parent.children %}
-                                        {{ child.firstname }}
-                                    {% endfor %}
-                            {% else %}
-                                <em>Aucun enfant</em>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ parent.getMercrediReservations|length }} réservation(s)
-                            <ul>
-                            {% for reservation in parent.getMercrediReservations %}
-                                {% if reservation.isSelected %}
-                                    <li class="text-success">
-                                        <b>{{reservation.slot.label}}</b>
-                                    </li>
+                    {% if parent.hasRole("ROLE_ADMIN") == false %}
+                        {% set color = "danger" %}
+                        {% if parent.getCountSelectedReservationsByType == 1 %}
+                            {% set color = "warning" %}
+                        {% endif %}
+                        {% if parent.getCountSelectedReservationsByType == 2 %}
+                            {% set color = "success" %}
+                        {% endif %}
+                        <tr class="table-{{color}}">
+                            <td>{{ parent.name }}</td>
+                            <td>
+                                {% if parent.children is not empty %}
+                                        {% for child in parent.children %}
+                                            {{ child.firstname }}
+                                        {% endfor %}
                                 {% else %}
-                                    <li class="text-warning">{{reservation.slot.label}}</li>
+                                    <em>Aucun enfant</em>
                                 {% endif %}
-                            {% endfor %}
-                            </ul>
-                        </td>
-                        <td>
-                            {{ parent.getWeekendReservations|length }}
-                            réservation(s)
-                            <ul>
-                                {% for reservation in parent.getWeekendReservations %}
+                            </td>
+                            <td>
+                                {{ parent.getMercrediReservations|length }} réservation(s)
+                                <ul>
+                                {% for reservation in parent.getMercrediReservations %}
                                     {% if reservation.isSelected %}
                                         <li class="text-success">
                                             <b>{{reservation.slot.label}}</b>
@@ -62,9 +48,25 @@
                                         <li class="text-warning">{{reservation.slot.label}}</li>
                                     {% endif %}
                                 {% endfor %}
-                            </ul>
-                        </td>
-                    </tr>
+                                </ul>
+                            </td>
+                            <td>
+                                {{ parent.getWeekendReservations|length }}
+                                réservation(s)
+                                <ul>
+                                    {% for reservation in parent.getWeekendReservations %}
+                                        {% if reservation.isSelected %}
+                                            <li class="text-success">
+                                                <b>{{reservation.slot.label}}</b>
+                                            </li>
+                                        {% else %}
+                                            <li class="text-warning">{{reservation.slot.label}}</li>
+                                        {% endif %}
+                                    {% endfor %}
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endif %}
                 {% else %}
                     <tr>
                         <td colspan="3" class="text-center">Aucun parent trouvé</td>
