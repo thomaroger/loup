@@ -6,6 +6,7 @@ namespace App\Controller;
 
 use App\Entity\Reservation;
 use App\Entity\Slot;
+use App\Repository\UserRepository;
 use App\Service\ReservationService;
 use App\Service\SlotService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,5 +98,24 @@ class AdminController extends AbstractController
         $response->headers->set('Content-Disposition', 'attachment; filename="reservations.csv"');
 
         return $response;
+    }
+
+    #[Route('/admin/parents', name: 'admin_parents')]
+    public function parents(UserRepository $userRepository): Response
+    {
+        $user = $this->getUser();
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $parents = $userRepository->createQueryBuilder('u')
+            ->leftJoin('u.children', 'c')
+            ->addSelect('c')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('admin/parents.html.twig', [
+            'parents' => $parents,
+            'user' => $user,
+            'path' => 'admin_parents',
+        ]);
     }
 }

@@ -34,9 +34,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: \App\Entity\Reservation::class, orphanRemoval: true)]
     private Collection $reservations;
 
+    #[ORM\OneToMany(mappedBy: 'parent', targetEntity: Child::class)]
+    private Collection $children;
+
     public function __construct()
     {
         $this->reservations = new ArrayCollection();
+        $this->children = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -117,5 +121,10 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             $this->reservations[] = $r;
             $r->setUser($this);
         } return $this;
+    }
+
+    public function getChildren(): Collection
+    {
+        return $this->children;
     }
 }

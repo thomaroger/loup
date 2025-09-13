@@ -61,6 +61,11 @@
 <a href="{{ path('app_index') }}" class="{% if path == 'slot_index' %}active{% endif %}">
     <i class="fa-solid fa-house"></i><br/>Home
 </a>
+{% if user.hasRole('ROLE_ADMIN') %}
+<a href="{{ path('admin_parents') }}" class="{% if path == 'admin_parents' %}active{% endif %}">
+	<i class="fa-solid fa-users"></i><br/>Parents
+</a>
+{% endif %}
 <a href="{{ path('app_logout') }}">
 <i class="fa-solid fa-arrow-right-to-bracket"></i><br/>Deconnexion
 </a>
