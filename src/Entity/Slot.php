@@ -99,16 +99,6 @@ class Slot
 
     public function getSelectedReservation(): string
     {
-        if ($this->getReservations()->count() === 1) {
-            $reservationUser = $this->getReservations()
-                ->first()
-                ->getUser();
-            $reservationChild = $this->getReservations()
-                ->first()
-                ->getChild();
-
-            return $reservationUser->getName() . ' - ' . $reservationChild->getFirstname();
-        }
         $reservations = $this->getReservations()
             ->filter(function (Reservation $r) {
                 return $r->getStatus() === 'SELECTIONNE';

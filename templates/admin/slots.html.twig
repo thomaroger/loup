@@ -7,12 +7,14 @@
   <tbody>
   {% for slot in slots %}
     {% set color = "" %}
-    {% if slot.reservations|length > 1 %}
+    {% if slot.reservations|length >= 1 %}
       {% set color = "warning" %}
     {% endif %}
-    {% if slot.reservations|length == 1 %}
-      {% set color = "success" %}
+    {% if slot.getSelectedReservation() >= 1 %}
+	    {% set color = "success" %}
     {% endif %}
+
+   
     <tr class="table-{{color}}">
       <td>{{ slot.label }}</td>
       <td>{{ slot.startAt|date('d/m/Y') }}</td>
@@ -20,7 +22,7 @@
       <td>{{ slot.reservations|length }}</td>
       <td>{{ slot.getSelectedReservation() }}</td>
       <td>
-        {% if slot.reservations|length > 1 %}
+        {% if slot.reservations|length >= 1 %}
           <a class="btn btn-danger btn-sm" href="{{ path('admin_slot_arbitre', {id:slot.id}) }}">Arbitrer</a>
         {% endif %}
       </td>
@@ -28,5 +30,7 @@
   {% endfor %}
   </tbody>
 </table>
-<a class="btn btn-outline-primary" href="{{ path('admin_export') }}">Exporter CSV</a>
+<div class="d-flex justify-content-end mb-3">
+<a class="btn btn-outline-primary pull-right" href="{{ path('admin_export') }}">Exporter CSV</a>
+</div>
 {% endblock %}

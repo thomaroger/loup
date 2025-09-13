@@ -70,7 +70,7 @@ class SlotService
         try {
             // Vérifier le nombre de réservations non rejetées pour ce slot
             $othersCount = $this->reservationRepository->countNonRejectedBySlot($slot);
-            $reservation->setStatus($othersCount > 0 ? 'NON SELECTIONNE' : 'SELECTIONNE');
+            $reservation->setStatus('NON SELECTIONNE');
 
             $reservation->setSlot($slot);
             $reservation->setUser($user);
