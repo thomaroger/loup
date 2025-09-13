@@ -12,6 +12,8 @@
                     <th>Nom du parent</th>
                     <th>Email</th>
                     <th>Enfants associés</th>
+                    <th>Mercredi</th>
+                    <th>Weekend</th>
                     <th>Roles</th>
                 </tr>
             </thead>
@@ -29,6 +31,8 @@
                                 <em>Aucun enfant</em>
                             {% endif %}
                         </td>
+                        <td>{{ parent.getCountMercrediReservations }} </td>
+                        <td>{{ parent.getCountWeekendReservations }}</td>
                         <td>{{ parent.roles|json_encode }}</td>
                     </tr>
                 {% else %}

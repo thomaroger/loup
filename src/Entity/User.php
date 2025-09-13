@@ -115,6 +115,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->reservations;
     }
 
+    public function getCountMercrediReservations(): int
+    {
+        $reservations = $this->getReservations()
+            ->filter(function (Reservation $r) {
+                return $r->getSlot()
+                    ->getType() === 'Mercredi';
+            });
+
+        return $reservations->count();
+    }
+
+    public function getCountWeekendReservations(): int
+    {
+        $reservations = $this->getReservations()
+            ->filter(function (Reservation $r) {
+                return $r->getSlot()
+                    ->getType() === 'Weekend';
+            });
+
+        return $reservations->count();
+    }
+
     public function addReservation(\App\Entity\Reservation $r): self
     {
         if (! $this->reservations->contains($r)) {
