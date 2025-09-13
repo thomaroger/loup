@@ -97,24 +97,33 @@ class Slot
         return $this->reservations;
     }
 
-    public function getSeletedReservation(): string
+    public function getSelectedReservation(): string
     {
         if ($this->getReservations()->count() === 1) {
-            return $this->getReservations()
+            $reservationUser = $this->getReservations()
                 ->first()
-                ->getUser()
-                ->getName();
+                ->getUser();
+            $reservationChild = $this->getReservations()
+                ->first()
+                ->getChild();
+
+            return $reservationUser->getName() . ' - ' . $reservationChild->getFirstname();
         }
         $reservations = $this->getReservations()
             ->filter(function (Reservation $r) {
                 return $r->getStatus() === 'SELECTIONNE';
             });
+
         if (empty($reservations) || $reservations->count() === 0) {
             return '';
         }
-        return $reservations->first()
-            ->getUser()
-            ->getName();
+
+        $reservationUser = $reservations->first()
+            ->getUser();
+        $reservationChild = $reservations->first()
+            ->getChild();
+
+        return $reservationUser->getName() . ' - ' . $reservationChild->getFirstname();
     }
 
     public static function getTypes(): array
