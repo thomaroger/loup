@@ -137,6 +137,37 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $reservations;
     }
 
+    public function getCountSelectedReservationsByType(): int
+    {
+        $count = 0;
+
+        $bool = false;
+        $reservations = $this->getMercrediReservations();
+        foreach ($reservations as $reservation) {
+            if ($reservation->isSelected()) {
+                $bool = true;
+            }
+        }
+
+        if ($bool === true) {
+            $count++;
+        }
+
+        $bool = false;
+        $reservations = $this->getWeekendReservations();
+        foreach ($reservations as $reservation) {
+            if ($reservation->isSelected()) {
+                $bool = true;
+            }
+        }
+
+        if ($bool === true) {
+            $count++;
+        }
+
+        return $count;
+    }
+
     public function addReservation(\App\Entity\Reservation $r): self
     {
         if (! $this->reservations->contains($r)) {

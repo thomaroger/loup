@@ -100,4 +100,13 @@ class Reservation
         $this->status = $s;
         return $this;
     }
+
+    public function isSelected(): bool
+    {
+        if ($this->status === 'SELECTIONNE') {
+            return true;
+        }
+
+        return false;
+    }
 }

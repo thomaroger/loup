@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block body %}
-    <div class="container mt-4">
+    <div class="container mt-4 parents-list">
         <h1 class="mb-4">Liste des parents et leurs enfants</h1>
         <table class="table table-bordered table-striped">
             <thead class="table-dark">
@@ -17,7 +17,14 @@
             </thead>
             <tbody>
                 {% for parent in parents %}
-                    <tr>
+                    {% set color = "danger" %}
+                    {% if parent.getCountSelectedReservationsByType == 1 %}
+                        {% set color = "warning" %}
+                    {% endif %}
+                    {% if parent.getCountSelectedReservationsByType == 2 %}
+                        {% set color = "success" %}
+                    {% endif %}
+                    <tr class="table-{{color}}">
                         <td>{{ parent.name }}</td>
                         <td>
                             {% if parent.children is not empty %}
@@ -32,7 +39,13 @@
                             {{ parent.getMercrediReservations|length }} réservation(s)
                             <ul>
                             {% for reservation in parent.getMercrediReservations %}
-                                <li>{{reservation.slot.label}}</li>
+                                {% if reservation.isSelected %}
+                                    <li class="text-success">
+                                        <b>{{reservation.slot.label}}</b>
+                                    </li>
+                                {% else %}
+                                    <li class="text-warning">{{reservation.slot.label}}</li>
+                                {% endif %}
                             {% endfor %}
                             </ul>
                         </td>
@@ -41,7 +54,13 @@
                             réservation(s)
                             <ul>
                                 {% for reservation in parent.getWeekendReservations %}
-                                    <li>{{reservation.slot.label}}</li>
+                                    {% if reservation.isSelected %}
+                                        <li class="text-success">
+                                            <b>{{reservation.slot.label}}</b>
+                                        </li>
+                                    {% else %}
+                                        <li class="text-warning">{{reservation.slot.label}}</li>
+                                    {% endif %}
                                 {% endfor %}
                             </ul>
                         </td>
