@@ -106,11 +106,7 @@ class AdminController extends AbstractController
         $user = $this->getUser();
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $parents = $userRepository->createQueryBuilder('u')
-            ->leftJoin('u.children', 'c')
-            ->addSelect('c')
-            ->getQuery()
-            ->getResult();
+        $parents = $userRepository->getParents();
 
         return $this->render('admin/parents.html.twig', [
             'parents' => $parents,
